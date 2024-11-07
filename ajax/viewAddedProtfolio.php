@@ -42,7 +42,7 @@ if($rsProtfolio->num_rows>0){
                                 <td><?= $rowsProtfolio['s_date'] ?></td>
                                 <td><?= $rowsProtfolio['s_rating'] ?></td>
                                 <td>
-                                        <button type="button" class="btn btn-sm btn-danger" onclick="deleteProtfolio(<?= $rowsProtfolio['p_image_id'] ?>)"><i class="ri-delete-bin-line"></i></button>
+                                        <button type="button" class="btn btn-sm btn-danger" onclick="deleteProtfolio(<?= $rowsProtfolio['p_image_id'] ?>,<?= $sc_id ?>)"><i class="ri-delete-bin-line"></i></button>
                                     </td>
                             </tr>
 

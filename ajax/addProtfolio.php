@@ -18,14 +18,22 @@ $sc_id = $_REQUEST['sc_id'];
                         <label for="service">Services</label>
                         <select name="service" id="service" class="form-control" required>
                             <?php 
-                            $sqlServices = "SELECT * FROM tbl_sc_services";
+                            $sqlAdded="SELECT * FROM tbl_added_services WHERE sc_id='$sc_id'";
+                            $rsAdded=$conn->query($sqlAdded);
+
+                            while($rowsAdded=$rsAdded->fetch_assoc()){
+                                $sc_s_id=$rowsAdded['sc_s_id'];
+                            
+                            $sqlServices = "SELECT * FROM tbl_sc_services WHERE sc_s_id='$sc_s_id'";
                             $rsServices = $conn->query($sqlServices);
 
-                            if($rsServices->num_rows > 0) {
-                                while($rowsServices = $rsServices->fetch_assoc()) { ?> 
+                            if($rsServices->num_rows ==1) {
+                               $rowsServices = $rsServices->fetch_assoc();?> 
                                     <option value="<?= $rowsServices['sc_s_id'] ?>"><?= $rowsServices['s_name'] ?></option>
-                                <?php }
+                                <?php 
                             }
+
+                        }
                             ?>
                         </select>
                     </div>

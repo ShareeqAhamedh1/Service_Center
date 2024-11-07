@@ -15,12 +15,7 @@
 						</button>
 					</div>
 
-					<!-- Button Group for Adding Facilities -->
-					<div class="ms-auto pageheader-btn">
-						<button type="button" onclick="openModelAddFacilities()" class="btn btn-primary btn-wave waves-effect waves-light me-2">
-							<i class="fe fe-plus mx-1 align-middle"></i>Add Facilities
-						</button>
-					</div>
+				
 				</div>
 				<!-- Page Header Close -->
 
@@ -30,7 +25,7 @@
 						<div class="row" id="user-profile">
                             
                         <?php 
-                                        $sqlServiceCenter="SELECT * FROM tbl_service_center";
+                                        $sqlServiceCenter="SELECT * FROM tbl_service_center ORDER BY sc_id DESC";
                                         $rsServiceCenter=$conn->query($sqlServiceCenter);
                                         if($rsServiceCenter->num_rows>0){
                                            while($rowsServiceCenter=$rsServiceCenter->fetch_assoc()){
@@ -72,6 +67,20 @@
 															data-bs-toggle="tooltip" 
 															data-bs-original-title="Add Portfolio">
 															<i class="ri-information-line"></i>
+														</a>
+
+														<a class="btn btn-icon btn-secondary btn-wave waves-effect waves-light"
+															onclick="openAddTestimonialsForStation(<?= $rowsServiceCenter['sc_id'] ?>)" 
+															data-bs-toggle="tooltip" 
+															data-bs-original-title="Add Testimonials">
+															<i class="ri-feedback-line"></i>
+														</a>
+
+														<a class="btn btn-icon btn-danger btn-wave waves-effect waves-light"
+															onclick="deleteStation(<?= $rowsServiceCenter['sc_id'] ?>)" 
+															data-bs-toggle="tooltip" 
+															data-bs-original-title="Delete Station">
+															<i class="ri-delete-bin-6-line"></i>
 														</a>
 
 												<!-- Second Button (conditionally displayed) -->
@@ -206,13 +215,11 @@
 				<div class="modal-content">
 					
 					<div class="modal-body ">
-						<div class="row">
-							<div class="col-lg-6" id="load_edit_data">
+						<div class="container">
+							<div class="col-lg-12" id="load_edit_data">
 								<!-- Dynamic content for editing will be loaded here -->
 							</div>
-							<div class="col-lg-6" id="load_data">
-								<!-- Additional dynamic content will be loaded here -->
-							</div>
+							
 						</div>
 					</div>
 					
@@ -222,17 +229,17 @@
 
 		<div class="modal fade" id="addServices" tabindex="-1" role="dialog" aria-hidden="true">
 			<div class="modal-dialog modal-xl" role="document">
-				<div class="modal-content col-8">
+				<div class="modal-content">
 					
 					<div class="modal-body">
 						<div class="container">
 							<div class="row">
 								<!-- Add Service Section -->
-								<div class="col-lg-6" id="add_service">
+								<div class="col-lg-4" id="add_service">
 									<!-- Dynamic content for adding service will load here -->
 								</div>
 								<!-- View Service Section -->
-								<div class="col-lg-6" id="view_service">
+								<div class="col-lg-8" id="view_service">
 									<!-- Dynamic content for viewing service details will load here -->
 								</div>
 							</div>
@@ -281,6 +288,22 @@
 				$('#addServices').modal('show');
 				$('#add_service').load('ajax/addProtfolio.php',{ sc_id:id });
 				$('#view_service').load('ajax/viewAddedProtfolio.php',{ sc_id:id });
+			}
+
+			function openAddTestimonialsForStation(id){
+				$('#addServices').modal('show');
+				$('#add_service').load('ajax/addTestimonials.php',{ sc_id:id });
+				$('#view_service').load('ajax/viewAddedTestimonials.php',{ sc_id:id });
+			}
+
+			function openModelEditTestimonial(id,sc_id){
+				$('#addServices').modal('show');
+				$('#add_service').load('ajax/editTestimonial.php',{rev_id:id,sc_id:sc_id});
+				$('#view_service').load('ajax/viewAddedTestimonials.php',{sc_id:sc_id});
+			}
+
+			function deleteStation(id){
+				alert("Please delete the station using PhpMyAdmin");
 			}
 
 
@@ -469,7 +492,7 @@
 					swal("Added", "Service added", "success")
 					.then((value) => {
 						if (value) {
-							$('#add_service').load('ajax/addServiceServicestation.php');
+							$('#add_service').load('ajax/addServiceServicestation.php',{sc_id:id});
 							$('#view_service').load('ajax/viewAdedServices.php',{sc_id:id});
 						}
 					});
@@ -477,7 +500,7 @@
 					swal("Warning", "Service Already Added", "warning")
 					.then((value) => {
 						if (value) {
-							$('#add_service').load('ajax/addServiceServicestation.php');
+							$('#add_service').load('ajax/addServiceServicestation.php',{sc_id:id});
 							$('#view_service').load('ajax/viewAdedServices.php',{sc_id:id});
 						}
 					});
@@ -694,5 +717,170 @@
 				});
 				
 	}
+
+	function deleteProtfolio(id,sc_id){
+		$.ajax({
+			url:'backend/deletePortfolio.php',
+			method:'POST',
+			data:{
+				p_image_id:id
+			},success:function(resp){
+				if(resp==200){
+					swal("Deleted","Deleted Protfolio","success")
+				.then((value)=>{
+					if (value) {
+						$('#add_service').load('ajax/addProtfolio.php',{ sc_id:sc_id });
+						$('#view_service').load('ajax/viewAddedProtfolio.php',{ sc_id:sc_id });
+                        }
+				})
+				}else{
+					swal("Cancelled", "Something went wrong", "error")
+                    .then((value) => {
+                        if (value) {
+                            $('#addServices').modal('hide');
+                            window.location.reload();
+                        }
+                    });
+                console.log(resp);
+				}
+			}
+		})
+	}
+
+
+
+
+	function addTestimonial(id){
+
+				var service = document.getElementById('service').value;
+				var customerName = document.getElementById('customerName').value;
+				var desc = document.getElementById('desc').value;
+				var date = document.getElementById('date').value;
+
+
+		$.ajax({
+					url: 'backend/addTestimonials.php',
+					method: 'POST',
+					data: {
+						service:service,
+						customerName:customerName,
+						desc:desc,
+						date:date,
+						sc_id:id
+					},// Prevent jQuery from setting the content type
+					success: function(resp) {
+						// console.log(resp);
+						// return false;
+						if (resp == 200) {
+							swal("Added", "Added a testimonial", "success")
+								.then((value) => {
+									if (value) {
+										$('#add_service').load('ajax/addTestimonials.php',{ sc_id:id });
+										$('#view_service').load('ajax/viewAddedTestimonials.php',{ sc_id:id });
+									}
+								});
+						} else if (resp == 202) {
+							swal("Warning", "Empty Fields", "warning")
+								.then((value) => {
+									if (value) {
+										$('#add_service').load('ajax/addTestimonials.php',{ sc_id:id });
+										$('#view_service').load('ajax/viewAddedTestimonials.php',{ sc_id:id });
+									}
+								});
+						} else{
+							swal("Cancelled", "Something went wrong", "error")
+								.then((value) => {
+									if (value) {
+										$('#editModal').modal('hide');
+										window.location.reload();
+									}
+								});
+							console.log(resp);
+						}
+					}
+				});
+
+	}
+
+	function deleteTestimonial(id,sc_id){
+		$.ajax({
+			url:'backend/deleteTestimonial.php',
+			method:'POST',
+			data:{
+				rev_id:id
+			},success:function(resp){
+				if(resp==200){
+					swal("Deleted","Deleted day","success")
+				.then((value)=>{
+					if (value) {
+						$('#add_service').load('ajax/addTestimonials.php',{ sc_id:sc_id });
+						$('#view_service').load('ajax/viewAddedTestimonials.php',{ sc_id:sc_id });
+                        }
+				})
+				}else{
+					swal("Cancelled", "Something went wrong", "error")
+                    .then((value) => {
+                        if (value) {
+                            $('#addServices').modal('hide');
+                            window.location.reload();
+                        }
+                    });
+                console.log(resp);
+				}
+			}
+		})
+	}
+
+
+	function editTestimonial(id){
+				var service = document.getElementById('service').value;
+				var customerName = document.getElementById('customerName').value;
+				var desc = document.getElementById('desc').value;
+				var date = document.getElementById('date').value;
+				var rev_id=document.getElementById('rev_id').value;
+				
+                $.ajax({
+			  url:'backend/editTestimonials.php',
+			  method:'POST',
+			  data:{
+						service:service,
+						customerName:customerName,
+						desc:desc,
+						date:date,
+						sc_id:id,
+						rev_id:rev_id
+			  },success:function(resp){
+				if(resp==200){
+					swal("Edited","Edited Testimonials","success")
+				.then((value)=>{
+					if (value) {
+						$('#add_service').load('ajax/addTestimonials.php',{ sc_id:id });
+						$('#view_service').load('ajax/viewAddedTestimonials.php',{ sc_id:id });
+                        }
+					});
+				  }else if (resp == 202) {
+							swal("Warning", "Empty Fields", "warning")
+								.then((value) => {
+									if (value) {
+										$('#add_service').load('ajax/addTestimonials.php',{ sc_id:id });
+										$('#view_service').load('ajax/viewAddedTestimonials.php',{ sc_id:id });
+									}
+								});
+						} 
+				  else {
+					swal("Cancelled", "Something went wrong", "error")
+					.then((value) => {
+						if (value) {
+							$('#addServices').modal('hide');
+							window.location.reload();
+						}
+					});
+                     console.log(resp);
+				  }
+			  }
+		  });
+	}
+
+
 
 		</script>

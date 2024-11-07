@@ -31,7 +31,7 @@ if($rsAddedServices->num_rows>0){
         <tr>
             <td><?= $rowsServices['s_name'] ?></td>
             <td>
-            <button type="button" class="btn btn-sm btn-danger" onclick="deleteAddedService(<?= $rowsAddedServices['a_s_id'] ?>,<?= $rowsAddedServices['sc_id'] ?>)"><i class="ri-delete-bin-6-line"></i></button>
+            <button type="button" class="btn btn-sm btn-danger" onclick="deleteAddedService(<?= $rowsAddedServices['a_s_id'] ?>)"><i class="ri-delete-bin-6-line"></i></button>
             <!-- <button type="button" class="btn btn-sm btn-warning" ><i class="ri-edit-box-fill"></i></button> -->
                                             
             </td>
