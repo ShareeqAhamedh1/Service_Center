@@ -21,6 +21,8 @@ $rowsServiceCenter=$rsServiceCenter->fetch_assoc();
 										<div class="form-group">
 										<label for="name">Service Station Name</label>
 										<input type="text" name="name" id="name" class="form-control" placeholder="Enter service station name" value="<?= $rowsServiceCenter['s_name'] ?>" required>
+										<input type="hidden" name="sc_id" id="sc_id" class="form-control"  value="<?= $sc_id ?>">
+									
 									</div>
 
 									<div class="form-group">
@@ -59,7 +61,7 @@ $rowsServiceCenter=$rsServiceCenter->fetch_assoc();
 										<textarea name="sabout" id="sabout" class="form-control" rows="3" placeholder="Enter service station description" value="<?= $rowsServiceCenter['s_desc'] ?>" required></textarea>
 									</div>
 
-											<button type="button" onclick="editHotel()" class="btn btn-primary">update</button>
+											<button type="button" onclick="editStation()" class="btn btn-primary">update</button>
 										</form>
 
 									</div>

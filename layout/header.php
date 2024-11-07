@@ -1019,13 +1019,7 @@ if(!isset($_SESSION['sc_id'])){
                                 <span class="side-menu__label">Dashboard</span>
                             </a>
                         </li>
-                        <li class="slide">
-                            <a href="addstation.php" class="side-menu__item">
-                                <i class="ri-hotel-line side-menu__icon"></i>
-                                <!-- <i class="ri-hotel-line"></i> -->
-                                <span class="side-menu__label">Add Station</span>
-                            </a>
-                        </li>
+
                         <li class="slide">
                             <a href="editprofile.php" class="side-menu__item">
                                 <i class="fe fe-edit side-menu__icon"></i>
@@ -1034,6 +1028,16 @@ if(!isset($_SESSION['sc_id'])){
 
                             </a>
                         </li>
+
+                        <li class="slide">
+                            <a href="addstation.php" class="side-menu__item">
+                                <i class="ri-hotel-line side-menu__icon"></i>
+                                <!-- <i class="ri-hotel-line"></i> -->
+                                <span class="side-menu__label">Add Station</span>
+                            </a>
+                        </li>
+                     
+
                         <li class="slide">
                             <a href="stations.php" class="side-menu__item">
                                 <i class="fe fe-mail side-menu__icon"></i>
@@ -1041,18 +1045,22 @@ if(!isset($_SESSION['sc_id'])){
                                 <!-- <a href="email.php" class="side-menu__item"> Mail-Inbox</a> -->
                             </a>
                         </li>
+                        <!-- <li class="slide">
+                            <a href="stations.php" class="side-menu__item">
+                                <i class="fe fe-mail side-menu__icon"></i>
+                                <span class="side-menu__label">Stations</span>
+                            </a>
+                        </li> -->
                         <li class="slide">
                             <a href="invoice.php" class="side-menu__item">
                                 <i class="ri-bill-line side-menu__icon"></i>
                                 <span class=" side-menu__label">Invoice</span>
-                                <!-- <a href="invoice.php" class="side-menu__item"> Invoice</a> -->
                             </a>
                         </li>
                         <li class="slide">
                             <a href="pricing.php" class="side-menu__item">
                                 <i class="ri-price-tag-3-line side-menu__icon"></i>
                                 <span class="side-menu__label">Pricing Tables</span>
-                                <!-- <a href="pricing.php" class="side-menu__item"> Pricing Tables</a> -->
                             </a>
                         </li>
                     

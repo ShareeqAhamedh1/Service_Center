@@ -26,9 +26,6 @@ $conn = new mysqli($servername,$username,$password,$dbname);
 // $conn_loc = new mysqli($servername,$username1,$password1,$dbname1);
 // $conn_loc = new mysqli($servername,$username,$password,$dbname_02);
 
-if(isset($_SESSION['sc_id'])){
-  $sc_id = $_SESSION['sc_id'];
-}
 
 
 // if(isset($_SESSION['h_s_a_id'])){
